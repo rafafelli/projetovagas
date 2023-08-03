@@ -1,0 +1,65 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+<h2 style="text-align: center; margin-top: 20%;">Relatório</h2>
+<div class="chart-container">
+    <h3>Vagas Criadas Por Mês</h3>
+    <canvas id="vagasPorMesChart"></canvas>
+</div>
+<div class="chart-container">
+    <h3>Candidatos Recebidos Por Mês</h3>
+    <canvas id="candidatosPorMesChart"></canvas>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<script>
+    var ctxVagas = document.getElementById('vagasPorMesChart').getContext('2d');
+    var vagasPorMesChart = new Chart(ctxVagas, {
+        type: 'line',
+        data: {
+            labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+            datasets: [{
+                label: 'Vagas Criadas',
+                data: {{ vagas_data }},
+        borderColor: 'blue',
+        fill: false
+    }]
+            },
+    options: {
+        scales: {
+            y: {
+                ticks: {
+                    stepSize: 1
+                }
+            }
+        }
+    }
+        });
+
+    var ctxCandidatos = document.getElementById('candidatosPorMesChart').getContext('2d');
+    var candidatosPorMesChart = new Chart(ctxCandidatos, {
+        type: 'line',
+        data: {
+            labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+            datasets: [{
+                label: 'Candidatos Recebidos',
+                data: {{ candidatos_data }},
+        borderColor: 'green',
+        fill: false
+    }]
+            },
+    options: {
+        scales: {
+            y: {
+                ticks: {
+                    stepSize: 1
+                }
+            }
+        }
+    }
+        });
+</script>
+{% endblock %}

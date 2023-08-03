@@ -1,0 +1,115 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+{% include 'filter.html' %}
+{% if vagas %}
+<h4 style="text-align: center; margin-top: 230px;">Vagas {% if request.user.is_candidato %}Encontradas{% else%}Criadas{% endif %}:</h4>
+{% endif %}
+<div class="container">
+  <div class="row">
+    {% for vaga in vagas %}
+    <div class="col-md-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <h3 class="card-title">{{ vaga.nome }}</h3>
+          {% if user.is_candidato %}
+          <p class="card-text"><strong>Empresa: </strong>{{vaga.empresa.nome}}</p>
+          {% endif %}
+          <p class="card-text"><strong>Faixa salarial: </strong>{{ vaga.get_faixa_salarial_display }}</p>
+          <p class="card-text"><strong>Escolaridade mínima:</strong> {{ vaga.get_escolaridade_minima_display }}</p>
+          <p class="card-text"><strong>Requisitos:</strong> {{vaga.requisitos}}</p>
+          {% if request.user.is_empresa %}
+          <p class="card-text"><strong>Candidatos inscritos na vaga:</strong> {{ vaga.total_aplicados }}</p>
+          {% endif %}
+
+          {% if request.user.is_candidato %}
+          {% if vaga.aplicado %}
+          <div class="card-footer text-center">
+            <a href="{% url 'empregos:cancelar_aplicacao' vaga.id %}" class="btn btn-danger">Cancelar Aplicação</a>
+          </div>
+          {% else %}
+          <div class="card-footer text-center">
+            <a href="{% url 'empregos:aplicar_vaga' vaga.id %}" class="btn btn-primary">Aplicar</a>
+          </div>
+          {% endif %}
+          {% else %}
+          <a href="{% url 'empregos:editar_vaga' vaga.id %}" class="btn btn-primary">Editar</a>
+          <button type="button" class="btn btn-danger" data-toggle="modal"
+            data-target="#deleteModal{{vaga.id}}">Excluir</button>
+          {% if vaga.total_aplicados > 0 %}
+          <button type="button" class="btn btn-success" data-toggle="modal" data-target="#candidatosModal{{vaga.id}}"
+            style="padding: 5x 10px; width: auto; margin-top: 10px;">Ver Informações dos Candidatos</button>
+          {% endif %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    {% if not request.user.is_candidato %}
+    <div id="deleteModal{{vaga.id}}" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Excluir Vaga</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <div class="modal-body">
+            <p>Você tem certeza que deseja excluir a vaga {{vaga.nome}}?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+            <a href="{% url 'empregos:deletar_vaga' vaga.id %}" class="btn btn-danger">Confirmar Exclusão</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="candidatosModal{{vaga.id}}" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Candidatos para a vaga {{vaga.nome}}</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <div class="modal-body">
+            {% for candidato in vaga.candidatos %}
+            <div class="candidato-item">
+              <p>
+                <strong>Nome:</strong> {{ candidato.nome }}<br>
+                <strong>Email:</strong> {{ candidato.email }}<br>
+                <strong>Escolaridade:</strong> {{ candidato.candidato_profile.get_escolaridade_display }}<br>
+                <strong>Pretensão Salarial:</strong> {{ candidato.candidato_profile.get_pretensao_salarial_display}}<br>
+                {% if request.user.is_empresa %}
+                <strong>Pontuação:</strong> {{ candidato.pontuacao }}
+                {% if candidato.pontuacao == 0 %}
+                <span class="bolinha" style="background-color: red;"></span>
+                {% elif candidato.pontuacao == 1 %}
+                <span class="bolinha" style="background-color: yellow;"></span>
+                {% elif candidato.pontuacao == 2 %}
+                <span class="bolinha" style="background-color: green;"></span>
+                {% endif %}
+                {% endif %}
+              </p>
+            </div>
+            {% if not forloop.last %}
+            <hr>
+            {% endif %}
+            {% endfor %}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% endif %}
+    {% endfor %}
+    <div class="col-12" style="margin-top: {% if vagas %}20px{% else %}60%{% endif %}; margin-bottom: 20px;">
+      <a href="{% url 'empregos:vagas' %}" class="btn btn-secondary">
+        {% if request.user.is_candidato %}Voltar para Área do Candidato{% else %}Voltar para Área da Empresa{% endif %}
+      </a>
+    </div>    
+  </div>
+</div>
+{% endblock %}

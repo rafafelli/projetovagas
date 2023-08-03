@@ -1,0 +1,111 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol,
+li {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+h1,
+h2,
+h3 {
+  margin-bottom: 20px;
+}
+
+button,
+input[type="submit"] {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  transition: 0.3s;
+  display: block;
+}
+
+button:hover,
+input[type="submit"]:hover {
+  background-color: #555;
+}
+
+form {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+ul {
+  list-style: none;
+}
+
+ul li {
+  margin-bottom: 5px;
+}
+
+.error-message {
+  color: red;
+  margin-bottom: 10px;
+}
+
+.bolinha {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-left: 5px;
+}
+
+.candidato-item {
+  padding: 10px 0;
+}
+
+.empresa-info {
+  margin-top: 5px; 
+  font-size: 14px;
+  color: #777;
+}
+
+.chart-container {
+  width: 50%;
+  float: left;
+  padding: 15px;
+}
+
+canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+body, ul {
+  margin: 0;
+}
+
+.navbar-nav .nav-link {
+  color: #333333; 
+}

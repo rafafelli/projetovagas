@@ -1,0 +1,70 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+{% if vagas %}
+<h4 style="text-align: center">Vagas Aplicadas:</h4>
+{% endif %}
+<div class="container" style="margin-top: 40%;">
+  <div class="row">
+    {% for vaga in vagas %}
+    <div class="col-md-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <h3 class="card-title">{{ vaga.nome }}</h3>
+          <p class="card-text"><strong>Faixa salarial: </strong>{{ vaga.get_faixa_salarial_display }}</p>
+          <p class="card-text"><strong>Escolaridade mínima:</strong> {{ vaga.get_escolaridade_minima_display }}</p>
+          <p class="card-text"><strong>Requisitos:</strong> {{vaga.requisitos}}</p>
+          {% if request.user.is_empresa %}
+          <p class="card-text"><strong>Candidatos inscritos na vaga:</strong> {{ vaga.total_aplicados }}</p>
+          {% endif %}
+
+          {% if request.user.is_candidato %}
+          {% if vaga.aplicado %}
+          <div class="card-footer text-center">
+            <a href="{% url 'empregos:cancelar_aplicacao' vaga.id %}?aplicadas=vagas_aplicadas"
+              class="btn btn-danger">Cancelar Aplicação</a>
+          </div>
+          {% else %}
+          <div class="card-footer text-center">
+            <a href="{% url 'empregos:aplicar_vaga' vaga.id %}" class="btn btn-primary">Aplicar</a>
+          </div>
+          {% endif %}
+          {% else %}
+          <a href="{% url 'empregos:editar_vaga' vaga.id %}" class="btn btn-primary">Editar</a>
+          <button type="button" class="btn btn-danger" data-toggle="modal"
+            data-target="#deleteModal{{vaga.id}}">Excluir</button>
+          {% if vaga.total_aplicados > 0 %}
+          <button type="button" class="btn btn-success" data-toggle="modal" data-target="#candidatosModal{{vaga.id}}"
+            style="padding: 5x 10px; width: auto; margin-top: 10px;">Ver Informações dos Candidatos</button>
+          {% endif %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <p>Nenhuma vaga foi aplicada.</p>
+    {% endfor %}
+    <div class="col-12" style="margin-top: 20px;">
+      <a href="{% url 'empregos:vagas' %}" class="btn btn-secondary">Voltar para Área do Candidato</a>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  function cancelarAplicacao(vagaId) {
+    $.ajax({
+      url: '/cancelar_aplicacao/' + vagaId + '/',
+      method: 'POST',
+      data: {
+        csrfmiddlewaretoken: '{{ csrf_token }}'
+      },
+      success: function () {
+        location.reload();
+      }
+    });
+  }
+
+</script>
+
+{% endblock %}

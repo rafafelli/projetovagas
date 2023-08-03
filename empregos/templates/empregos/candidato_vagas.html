@@ -1,0 +1,13 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+<div class="container" style="margin-top: 30%;">
+  <h1 class="text-center my-3">Área do Candidato</h1>
+  <div class="row justify-content-center">
+    <div class="col-6 text-center">
+      <a href="{% url 'empregos:vagas_aplicadas' %}" class="btn btn-primary btn-lg my-2">Vagas Aplicadas</a>
+      <a href="{% url 'empregos:ver_vagas' %}" class="btn btn-success btn-lg my-2" method="GET">Procurar Vagas</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

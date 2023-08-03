@@ -1,0 +1,37 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+<h2 style="display: flex; justify-content: center; align-items: center; margin-top: 100px;">Registro</h2>
+<form method="post" style="max-width: 400px; margin: auto; padding: 15px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+  {% csrf_token %}
+  <label for="tipo_cadastro">Tipo de Cadastro:</label>
+  <select id="tipo_cadastro" name="tipo_cadastro" required onchange="showFields()">
+    <option value="candidato">Candidato</option>
+    <option value="empresa">Empresa</option>
+  </select>
+  {{ form.nome.label_tag }} {{ form.nome }}
+  {{ form.email.label_tag }} {{ form.email }}
+  {{ form.password.label_tag }} {{ form.password }}
+  <div id="candidato_fields">
+    {# Campos exclusivos para candidato #}
+    {{ form.pretensao_salarial.label_tag }} {{ form.pretensao_salarial }}
+    {{ form.escolaridade.label_tag }} {{ form.escolaridade }}
+  </div>
+  <button type="submit" style="margin-top: 10px;">Registrar</button>
+</form>
+<script>
+  function showFields() {
+    const tipoCadastro = document.getElementById("tipo_cadastro").value;
+    const candidatoFields = document.getElementById("candidato_fields");
+
+    if (tipoCadastro === "candidato") {
+      candidatoFields.style.display = "block";
+    } else {
+      candidatoFields.style.display = "none";
+    }
+  }
+
+  window.addEventListener('load', showFields);
+</script>
+
+{% endblock %}

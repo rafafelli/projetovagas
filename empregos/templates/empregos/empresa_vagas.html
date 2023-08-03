@@ -1,0 +1,13 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+<div style="margin-top: 30%;">
+  <h1 class="text-center my-3">Área da Empresa</h1>
+  <div class="row justify-content-center">
+    <div class="col-6 text-center">
+      <a href="{% url 'empregos:criar_vaga' %}" class="btn btn-primary btn-lg my-2">Criar Vaga</a>
+      <a href="{% url 'empregos:ver_vagas' %}" class="btn btn-warning btn-lg my-2">Ver Vagas Criadas</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
