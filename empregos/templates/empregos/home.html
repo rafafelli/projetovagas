@@ -14,7 +14,7 @@
       {% if user.is_candidato %}
       <a href="{% url 'empregos:vagas' %}" class="btn btn-primary">Clique Aqui e Encontre as Melhores Vagas!</a>
       {% else %}
-      <a href="{% url 'empregos:vagas' %}" class="btn btn-primary">Clique Aqui e Parar Criar as Vagas!</a>
+      <a href="{% url 'empregos:vagas' %}" class="btn btn-primary">Clique Aqui Para Criar as Vagas!</a>
       {% endif %}
       {% else %}
       <a href="{% url 'empregos:registro' %}" class="btn btn-primary">Clique Aqui Para Criar sua Conta!</a>
